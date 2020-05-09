@@ -1,3 +1,4 @@
+require("dotenv").config();
 export default {
   mode: "universal",
   /*
@@ -45,7 +46,7 @@ export default {
   /*
    ** Nuxt.js modules
    */
-  modules: [],
+  modules: ["@nuxtjs/dotenv"],
   /*
    ** Build configuration
    */
