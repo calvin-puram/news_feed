@@ -1,0 +1,21 @@
+{
+  "name": "news_feed",
+  "version": "1.0.0",
+  "description": "My laudable Nuxt.js project",
+  "author": "calvin",
+  "private": true,
+  "scripts": {
+    "dev": "nuxt",
+    "build": "nuxt build",
+    "start": "nuxt start",
+    "generate": "nuxt generate"
+  },
+  "dependencies": {
+    "nuxt": "^2.0.0",
+    "vue-material": "^1.0.0-beta-13"
+  },
+  "devDependencies": {
+    "node-sass": "^4.14.1",
+    "sass-loader": "^8.0.2"
+  }
+}
