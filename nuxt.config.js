@@ -42,18 +42,25 @@ export default {
   /*
    ** Nuxt.js dev-modules
    */
-  buildModules: [],
+  buildModules: ["@nuxtjs/eslint-module"],
   /*
    ** Nuxt.js modules
    */
-  modules: ["@nuxtjs/dotenv"],
+  modules: ["@nuxtjs/dotenv", "@nuxtjs/axios"],
   /*
    ** Build configuration
    */
+
   build: {
     /*
      ** You can extend webpack config here
      */
     extend(config, ctx) {}
+  },
+  /**
+   * Axios module configuration
+   */
+  axios: {
+    credentials: true
   }
 };
