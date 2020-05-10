@@ -46,7 +46,12 @@
 
 <script>
 export default {
-  props: ['headline'],
+  props: {
+    headline: {
+      type: Object,
+      required: true,
+    },
+  },
 };
 </script>
 

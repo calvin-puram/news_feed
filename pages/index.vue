@@ -23,6 +23,7 @@
 <script>
 import Navbar from '@/components/Navbar.vue';
 import NewsCard from '@/components/NewCard';
+
 export default {
   components: {
     Navbar,
@@ -37,6 +38,11 @@ export default {
     } catch (e) {
       error({ statusCode: 400, message: 'something Unexpected happens' });
     }
+  },
+  data() {
+    return {
+      showSidepanel: false,
+    };
   },
   computed: {
     headlines() {
