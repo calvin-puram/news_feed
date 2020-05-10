@@ -46,7 +46,7 @@ export default {
   /*
    ** Nuxt.js modules
    */
-  modules: ['@nuxtjs/dotenv', '@nuxtjs/axios'],
+  modules: ['@nuxtjs/dotenv', '@nuxtjs/axios', '@nuxtjs/proxy'],
   /*
    ** Build configuration
    */
@@ -62,5 +62,15 @@ export default {
    */
   axios: {
     credentials: true,
+    proxy: true,
+  },
+  /**
+   * proxy configuration
+   */
+  proxy: {
+    '/api/': {
+      target: 'https://newsapi.org/v2/',
+      pathRewrite: { '^/api/': '' },
+    },
   },
 };

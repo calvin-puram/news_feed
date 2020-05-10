@@ -10,9 +10,7 @@
 export default {
   async asyncData({ $axios, error }) {
     try {
-      const { data } = await $axios.get(
-        'https://newsapi.org/v2/top-headlines?country=us'
-      );
+      const { data } = await $axios.get('/api/top-headlines?country=us');
       return {
         headlines: data.articles,
       };
