@@ -28,16 +28,20 @@ export default {
     Navbar,
     NewsCard,
   },
-  async asyncData({ $axios, error }) {
+  async fetch({ store, error }) {
     try {
-      const { data } = await $axios.get('/api/top-headlines?country=us');
-
-      return {
-        headlines: data.articles,
-      };
+      await store.dispatch(
+        'news/loadHeadline',
+        '/api/top-headlines?country=us'
+      );
     } catch (e) {
       error({ statusCode: 400, message: 'something Unexpected happens' });
     }
+  },
+  computed: {
+    headlines() {
+      return this.$store.getters['news/headlines'];
+    },
   },
 };
 </script>
