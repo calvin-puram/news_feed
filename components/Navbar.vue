@@ -1,7 +1,8 @@
 <template>
-  <div class="md-layout-item">
+  <div class="navbar">
+    <!-- navbar -->
     <md-toolbar elevation="1" class="fixed-toolbar">
-      <md-button class="md-icon-button">
+      <md-button class="md-icon-button" @click="showLeftSidepanel = true">
         <md-icon>menu</md-icon>
       </md-button>
 
@@ -13,7 +14,34 @@
         <md-button class="md-accent" @click="open">Categories</md-button>
       </div>
     </md-toolbar>
-    <!-- news category -->
+
+    <!-- Personal News Feed (Left Drawer) -->
+    <md-drawer md-fixed :md-active.sync="showLeftSidepanel">
+      <md-toolbar md-elevation="1">
+        <span class="md-title">Personal Feed</span>
+      </md-toolbar>
+
+      <md-progress-bar v-if="loading" md-mode="indeterminate"></md-progress-bar>
+
+      <md-field>
+        <label for="country">Country</label>
+        <md-select
+          id="country"
+          v-model="country"
+          :value="stateCountry"
+          name="country"
+          @input="changeCountry"
+        >
+          <md-option value="us">United States</md-option>
+          <md-option value="ca">Canada</md-option>
+          <md-option value="de">Germany</md-option>
+          <md-option value="ru">Russia</md-option>
+          <md-option value="ng">Nigeria</md-option>
+        </md-select>
+      </md-field>
+    </md-drawer>
+
+    <!-- news category (right drawer) -->
     <md-drawer class="md-right" md-fixed :md-active.sync="showSidepanel">
       <md-toolbar :md-elevation="1">
         <span class="md-title">News Categories</span>
@@ -43,7 +71,9 @@
 export default {
   data() {
     return {
+      country: '',
       showSidepanel: false,
+      showLeftSidepanel: false,
       newsCategories: [
         { name: 'Top Headlines', path: '', icon: 'today' },
         { name: 'Technology', path: 'technology', icon: 'keyboard' },
@@ -62,6 +92,17 @@ export default {
     loading() {
       return this.$store.getters['news/loading'];
     },
+    stateCountry() {
+      return this.$store.getters['news/country'];
+    },
+  },
+  watch: {
+    async country() {
+      await this.$store.dispatch(
+        'news/loadHeadline',
+        `/api/top-headlines?country=${this.stateCountry}&category=${this.stateCategory}`
+      );
+    },
   },
   methods: {
     login() {
@@ -77,8 +118,11 @@ export default {
       this.$store.commit('news/set_category', category);
       await this.$store.dispatch(
         'news/loadHeadline',
-        `/api/top-headlines?country=us&category=${this.stateCategory}`
+        `/api/top-headlines?country=${this.stateCountry}&category=${this.stateCategory}`
       );
+    },
+    changeCountry(country) {
+      this.$store.commit('news/set_country', country);
     },
   },
 };
@@ -88,6 +132,13 @@ export default {
 .fixed-toolbar {
   position: fixed;
   top: 0;
+  left: 0;
   z-index: 5;
+  max-width: 100% !important;
 }
+
+/* .navbar {
+  max-width: 100vh !important;
+  overflow-x: hidden;
+} */
 </style>

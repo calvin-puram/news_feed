@@ -33,7 +33,7 @@ export default {
     try {
       await store.dispatch(
         'news/loadHeadline',
-        `/api/top-headlines?country=us&category=${store.state.news.categories}`
+        `/api/top-headlines?country=${store.state.news.countries}&category=${store.state.news.categories}`
       );
     } catch (e) {
       error({ statusCode: 400, message: 'something Unexpected happens' });
@@ -51,3 +51,9 @@ export default {
   },
 };
 </script>
+
+<style>
+body {
+  overflow: auto;
+}
+</style>
