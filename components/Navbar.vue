@@ -19,6 +19,8 @@
         <span class="md-title">News Categories</span>
       </md-toolbar>
 
+      <md-progress-bar v-if="loading" md-mode="indeterminate"></md-progress-bar>
+
       <md-list>
         <md-subheader class="md-primary">Categories</md-subheader>
         <md-list-item
@@ -26,8 +28,11 @@
           :key="i"
           @click="loadCategory(category.path)"
         >
-          <md-icon>{{ category.icon }}</md-icon>
-          <span class="md-list-item-name">{{ category.name }}</span>
+          <md-icon
+            :class="category.path === stateCategory ? 'md-primary' : ''"
+            >{{ category.icon }}</md-icon
+          >
+          <span class="md-list-item-text">{{ category.name }}</span>
         </md-list-item>
       </md-list>
     </md-drawer>
@@ -50,6 +55,14 @@ export default {
       ],
     };
   },
+  computed: {
+    stateCategory() {
+      return this.$store.getters['news/category'];
+    },
+    loading() {
+      return this.$store.getters['news/loading'];
+    },
+  },
   methods: {
     login() {
       this.$router.push('/login');
@@ -60,8 +73,12 @@ export default {
     open() {
       this.showSidepanel = !this.showSidepanel;
     },
-    loadCategory(category) {
-      this.$store.dispatch('news/set_category', category);
+    async loadCategory(category) {
+      this.$store.commit('news/set_category', category);
+      await this.$store.dispatch(
+        'news/loadHeadline',
+        `/api/top-headlines?country=us&category=${this.stateCategory}`
+      );
     },
   },
 };
