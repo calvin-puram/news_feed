@@ -1,52 +1,52 @@
-require("dotenv").config();
+require('dotenv').config();
 export default {
-  mode: "universal",
+  mode: 'universal',
   /*
    ** Headers of the page
    */
   head: {
-    title: process.env.npm_package_name || "",
+    title: process.env.npm_package_name || '',
     meta: [
-      { charset: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
+      { charset: 'utf-8' },
+      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       {
-        hid: "description",
-        name: "description",
-        content: process.env.npm_package_description || ""
-      }
+        hid: 'description',
+        name: 'description',
+        content: process.env.npm_package_description || '',
+      },
     ],
     link: [
-      { rel: "icon", type: "image/x-icon", href: "/favicon.ico" },
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
       {
         href:
-          "//fonts.googleapis.com/css?family=Roboto:400,500,700,400italic|Material+Icons",
-        rel: "stylesheet"
-      }
-    ]
+          '//fonts.googleapis.com/css?family=Roboto:400,500,700,400italic|Material+Icons',
+        rel: 'stylesheet',
+      },
+    ],
   },
   /*
    ** Customize the progress-bar color
    */
-  loading: { color: "#9ccc65", height: "10px" },
+  loading: { color: '#9ccc65', height: '10px' },
   /*
    ** Global CSS
    */
   css: [
-    { src: "vue-material/dist/vue-material.min.css", lang: "css" },
-    { src: "~assets/theme.scss", lang: "scss" }
+    { src: 'vue-material/dist/vue-material.min.css', lang: 'css' },
+    { src: '~assets/theme.scss', lang: 'scss' },
   ],
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: [{ src: "~plugins/vue-material" }],
+  plugins: [{ src: '~plugins/vue-material' }, { src: '~plugins/axios' }],
   /*
    ** Nuxt.js dev-modules
    */
-  buildModules: ["@nuxtjs/eslint-module"],
+  buildModules: ['@nuxtjs/eslint-module'],
   /*
    ** Nuxt.js modules
    */
-  modules: ["@nuxtjs/dotenv", "@nuxtjs/axios"],
+  modules: ['@nuxtjs/dotenv', '@nuxtjs/axios'],
   /*
    ** Build configuration
    */
@@ -55,12 +55,12 @@ export default {
     /*
      ** You can extend webpack config here
      */
-    extend(config, ctx) {}
+    extend(config, ctx) {},
   },
   /**
    * Axios module configuration
    */
   axios: {
-    credentials: true
-  }
+    credentials: true,
+  },
 };
