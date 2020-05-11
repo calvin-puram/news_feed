@@ -6,9 +6,9 @@
       </md-card-header>
 
       <!-- Register Form -->
-      <form @submit.prevent="registerUser">
+      <form @submit.prevent="validateForm">
         <md-card-content>
-          <md-field md-clearable>
+          <md-field md-clearable :class="getValidationClass('email')">
             <label for="email">Email</label>
             <md-input
               id="email"
@@ -18,9 +18,15 @@
               name="email"
               autocomplete="email"
             />
+            <span v-if="!$v.form.email.required" class="md-error"
+              >email is required</span
+            >
+            <span v-else-if="!$v.form.email.email" class="md-error"
+              >invalid email</span
+            >
           </md-field>
 
-          <md-field>
+          <md-field :class="getValidationClass('password')">
             <label for="password">Password</label>
             <md-input
               id="password"
@@ -30,6 +36,15 @@
               name="password"
               autocomplete="password"
             />
+            <span v-if="!$v.form.password.required" class="md-error"
+              >password is required</span
+            >
+            <span v-else-if="!$v.form.password.minLength" class="md-error"
+              >password too short</span
+            >
+            <span v-else-if="!$v.form.password.maxLength" class="md-error"
+              >password too long</span
+            >
           </md-field>
         </md-card-content>
 
@@ -51,7 +66,16 @@
 </template>
 
 <script>
+import { validationMixin } from 'vuelidate';
+const {
+  required,
+  email,
+  maxLength,
+  minLength,
+} = require('vuelidate/lib/validators');
+
 export default {
+  mixins: [validationMixin],
   middleware: ['auth'],
   data() {
     return {
@@ -60,6 +84,19 @@ export default {
         password: '',
       },
     };
+  },
+  validations: {
+    form: {
+      email: {
+        required,
+        email,
+      },
+      password: {
+        required,
+        minLength: minLength(6),
+        maxLength: maxLength(20),
+      },
+    },
   },
   computed: {
     loading() {
@@ -77,12 +114,24 @@ export default {
     },
   },
   methods: {
-    registerUser() {
-      this.$store.dispatch('auth/register_user', {
-        email: this.form.email,
-        password: this.form.password,
-        returnSecureToken: true,
-      });
+    async validateForm() {
+      this.$v.$touch();
+      if (!this.$v.$invalid) {
+        await this.$store.dispatch('auth/register_user', {
+          email: this.form.email,
+          password: this.form.password,
+          returnSecureToken: true,
+        });
+      }
+    },
+
+    getValidationClass(fieldName) {
+      const field = this.$v.form[fieldName];
+      if (field) {
+        return {
+          'md-invalid': field.$invalid && field.$dirty,
+        };
+      }
     },
   },
 };
