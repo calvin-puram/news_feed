@@ -9,8 +9,20 @@
       <nuxt-link to="/" class="md-primary md-title">GlobalNews</nuxt-link>
 
       <div class="md-toolbar-section-end">
-        <md-button @click="login">Login</md-button>
-        <md-button @click="register">Register</md-button>
+        <template v-if="isAuthenticated">
+          <md-button>
+            <md-avatar><img :src="user.avatar" :alt="user.email" /></md-avatar>
+            {{ user.email }}
+          </md-button>
+
+          <md-button>Logout</md-button>
+        </template>
+
+        <template v-else>
+          <md-button @click="login">Login</md-button>
+          <md-button @click="register">Register</md-button>
+        </template>
+
         <md-button class="md-accent" @click="open">Categories</md-button>
       </div>
     </md-toolbar>
@@ -95,6 +107,12 @@ export default {
     stateCountry() {
       return this.$store.getters['news/country'];
     },
+    isAuthenticated() {
+      return this.$store.getters['auth/isAuthenticated'];
+    },
+    user() {
+      return this.$store.getters['auth/user'];
+    },
   },
   watch: {
     async country() {
@@ -136,9 +154,4 @@ export default {
   z-index: 5;
   max-width: 100% !important;
 }
-
-/* .navbar {
-  max-width: 100vh !important;
-  overflow-x: hidden;
-} */
 </style>

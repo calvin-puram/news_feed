@@ -1,11 +1,14 @@
+import md5 from 'md5';
 export const state = () => ({
   loading: false,
   token: '',
+  user: {},
 });
 
 export const getters = {
   loading: (state) => state.loading,
   isAuthenticated: (state) => state.token !== '',
+  user: (state) => state.user,
 };
 
 export const actions = {
@@ -19,11 +22,17 @@ export const actions = {
       if (data) {
         commit('auth_loading', false);
         commit('set_token', data.idToken);
+
+        const avatar = `http://gravatar.com/avatar/${md5(
+          data.email
+        )}?d=identicon`;
+        const user = { email: data.email, avatar };
+        commit('set_user', user);
       }
       return data;
     } catch (e) {
       commit('auth_loading', false);
-      console.log(e.response.data.error.msg);
+      console.log(e.response.data.error.message);
     }
   },
 };
@@ -35,5 +44,9 @@ export const mutations = {
 
   set_token(state, token) {
     state.token = token;
+  },
+
+  set_user(state, user) {
+    state.user = user;
   },
 };

@@ -106,22 +106,22 @@ export default {
       return this.$store.getters['auth/isAuthenticated'];
     },
   },
-  watch: {
-    isAuthenticated(value) {
-      if (value) {
-        setTimeout(() => this.$router.push('/'), 2000);
-      }
-    },
-  },
+
   methods: {
-    async validateForm() {
+    validateForm() {
       this.$v.$touch();
       if (!this.$v.$invalid) {
-        await this.$store.dispatch('auth/register_user', {
-          email: this.form.email,
-          password: this.form.password,
-          returnSecureToken: true,
-        });
+        this.$store
+          .dispatch('auth/register_user', {
+            email: this.form.email,
+            password: this.form.password,
+            returnSecureToken: true,
+          })
+          .then((data) => {
+            if (data) {
+              this.$router.push('/');
+            }
+          });
       }
     },
 
