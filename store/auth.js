@@ -5,7 +5,7 @@ export const state = () => ({
 
 export const getters = {
   loading: (state) => state.loading,
-  isAuthenticated: (state) => !!state.token,
+  isAuthenticated: (state) => state.token !== '',
 };
 
 export const actions = {

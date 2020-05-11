@@ -13,6 +13,7 @@
             <md-input
               id="email"
               v-model="form.email"
+              :disabled="loading"
               type="email"
               name="email"
               autocomplete="email"
@@ -24,6 +25,7 @@
             <md-input
               id="password"
               v-model="form.password"
+              :disabled="loading"
               type="password"
               name="password"
               autocomplete="password"
@@ -33,11 +35,17 @@
 
         <md-card-actions>
           <md-button to="/login">Go to Login</md-button>
-          <md-button class="md-primary md-raised" type="submit"
+          <md-button
+            :disabled="loading"
+            class="md-primary md-raised"
+            type="submit"
             >Submit</md-button
           >
         </md-card-actions>
       </form>
+      <md-snackbar :md-active.sync="isAuthenticated">
+        {{ form.email }} was successfully registered!
+      </md-snackbar>
     </md-card>
   </div>
 </template>
@@ -51,6 +59,21 @@ export default {
         password: '',
       },
     };
+  },
+  computed: {
+    loading() {
+      return this.$store.getters['auth/loading'];
+    },
+    isAuthenticated() {
+      return this.$store.getters['auth/isAuthenticated'];
+    },
+  },
+  watch: {
+    isAuthenticated(value) {
+      if (value) {
+        setTimeout(() => this.$router.push('/'), 2000);
+      }
+    },
   },
   methods: {
     registerUser() {
