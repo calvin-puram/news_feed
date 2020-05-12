@@ -17,20 +17,29 @@ export const actions = {
   async register_user({ commit }, userdata) {
     try {
       commit('auth_loading', true);
-      const { data } = await this.$axios.post(
-        `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${process.env.FB_AUTH_KEY}`,
-        userdata
-      );
-      if (data) {
+      const { data } = await this.$axios.post(userdata.Api_Url, {
+        email: userdata.email,
+        password: userdata.password,
+        returnSecureToken: userdata.returnSecureToken,
+      });
+      let user;
+      if (data && data.idToken) {
+        if (userdata.action === 'register') {
+          const avatar = `http://gravatar.com/avatar/${md5(
+            data.email
+          )}?d=identicon`;
+          user = { email: data.email, avatar };
+          await db.collection('users').doc(userdata.email).set(user);
+        } else {
+          const loginRef = await db.collection('users').doc(userdata.email);
+          const loggedInUser = await loginRef.get();
+          user = loggedInUser.data();
+        }
         commit('auth_loading', false);
         commit('set_token', data.idToken);
-
-        const avatar = `http://gravatar.com/avatar/${md5(
-          data.email
-        )}?d=identicon`;
-        const user = { email: data.email, avatar };
-        await db.collection('users').doc(userdata.email).set(user);
         commit('set_user', user);
+
+        await saveToLocalStorage(data, user);
       }
       return data;
     } catch (e) {
