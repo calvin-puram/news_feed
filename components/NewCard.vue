@@ -40,7 +40,9 @@
       </md-card-content>
 
       <md-card-actions>
-        <md-button @click="addheadlineToFeed(headline)"
+        <md-button
+          :class="isInFeed(headline.title)"
+          @click="addheadlineToFeed(headline)"
           ><md-icon>bookmark</md-icon></md-button
         >
         <md-button><md-icon>message</md-icon></md-button>
@@ -68,12 +70,20 @@ export default {
     user() {
       return this.$store.getters['auth/user'];
     },
+    feed() {
+      return this.$store.getters['news/feed'];
+    },
   },
   methods: {
     async addheadlineToFeed(headline) {
       if (this.user && this.user.email) {
         await this.$store.dispatch('news/set_addFeed', headline);
       }
+    },
+    isInFeed(title) {
+      const inFeed =
+        this.feed.findIndex((headline) => headline.title === title) > -1;
+      return inFeed ? 'md-primary' : '';
     },
   },
 };
