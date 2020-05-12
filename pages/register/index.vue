@@ -113,6 +113,7 @@ export default {
       if (!this.$v.$invalid) {
         this.$store
           .dispatch('auth/register_user', {
+            Api_Url: `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${process.env.FB_AUTH_KEY}`,
             email: this.form.email,
             password: this.form.password,
             returnSecureToken: true,

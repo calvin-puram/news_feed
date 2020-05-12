@@ -1,5 +1,5 @@
 import md5 from 'md5';
-import db from '~plugins/firestore';
+import db from '@/plugins/firestore';
 
 export const state = () => ({
   loading: false,
