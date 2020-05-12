@@ -56,7 +56,7 @@ export const actions = {
   logout({ commit }) {
     commit('clear_token');
     commit('clear_user');
-
+    commit('news/clear_feed');
     clearSaveUserData();
   },
 };

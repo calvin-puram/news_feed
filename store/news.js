@@ -63,4 +63,7 @@ export const mutations = {
   set_feed(state, feed) {
     state.feed = feed;
   },
+  clear_feed(state) {
+    state.feed = [];
+  },
 };
