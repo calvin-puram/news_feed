@@ -1,4 +1,4 @@
-import Cookie from 'js-cookie';
+import Cookies from 'js-cookie';
 
 export const saveUsers = ({ idToken, expiresIn }, { email, avatar }) => {
   const tokenExpiration = Date.now() + expiresIn * 1000;
@@ -6,10 +6,10 @@ export const saveUsers = ({ idToken, expiresIn }, { email, avatar }) => {
   localStorage.setItem('expiresIn', tokenExpiration);
   localStorage.setItem('email', email);
   localStorage.setItem('avatar', avatar);
-  Cookie.set('jwt', idToken);
-  Cookie.set('expiresIn', tokenExpiration);
-  Cookie.set('email', email);
-  Cookie.set('avatar', avatar);
+  Cookies.set('jwt', idToken);
+  Cookies.set('expiresIn', tokenExpiration);
+  Cookies.set('email', email);
+  Cookies.set('avatar', avatar);
 };
 
 export const getUserFromCookies = (req) => {
@@ -52,15 +52,15 @@ export const getUserFromLocalStorage = () => {
 };
 
 export const clearSaveUserData = () => {
-  if (process.client) {
+  if (!process.server) {
     localStorage.removeItem('jwt');
     localStorage.removeItem('email');
     localStorage.removeItem('avatar');
     localStorage.removeItem('expiresIn');
-  } else if (process.server) {
-    Cookie.remove('jwt');
-    Cookie.remove('email');
-    Cookie.remove('avatar');
-    Cookie.remove('expiresIn');
   }
+
+  Cookies.remove('jwt');
+  Cookies.remove('email');
+  Cookies.remove('avatar');
+  Cookies.remove('expiresIn');
 };
