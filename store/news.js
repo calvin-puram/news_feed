@@ -36,7 +36,7 @@ export const actions = {
   async getFeed({ commit, rootState }) {
     if (rootState.auth.user.email) {
       const feedRef = db.collection(`users/${rootState.auth.user.email}/feed`);
-      await feedRef.get().then((querySnapshot) => {
+      await feedRef.onSnapshot((querySnapshot) => {
         const headline = [];
         querySnapshot.forEach((doc) => {
           headline.push(doc.data());
