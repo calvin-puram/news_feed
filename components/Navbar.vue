@@ -51,6 +51,34 @@
           <md-option value="ng">Nigeria</md-option>
         </md-select>
       </md-field>
+
+      <!-- Feed Content -->
+      <md-list
+        v-for="headline in feed"
+        :key="headline.id"
+        class="md-triple-line"
+      >
+        <md-list-item>
+          <md-avatar
+            ><img :src="headline.urlToImage" :alt="headline.title"
+          /></md-avatar>
+
+          <div class="md-list-item-text">
+            <span
+              ><a :href="headline.url" target="_blank">{{
+                headline.title
+              }}</a></span
+            >
+            <span>{{ headline.source.name }}</span>
+            <span>View Comments</span>
+          </div>
+
+          <md-button class="md-icon-button md-list-action">
+            <md-icon class="md-accent">delete</md-icon>
+          </md-button>
+        </md-list-item>
+        <md-divider class="md-inset"></md-divider>
+      </md-list>
     </md-drawer>
 
     <!-- news category (right drawer) -->
@@ -112,6 +140,9 @@ export default {
     },
     user() {
       return this.$store.getters['auth/user'];
+    },
+    feed() {
+      return this.store.getters['news/feed'];
     },
   },
   watch: {

@@ -5,7 +5,7 @@ import { saveUsers, clearSaveUserData } from '@/utils/index';
 export const state = () => ({
   loading: false,
   token: '',
-  user: {},
+  user: null,
 });
 
 export const getters = {
@@ -75,5 +75,5 @@ export const mutations = {
   },
 
   clear_token: (state) => (state.token = ''),
-  clear_user: (state) => (state.user = {}),
+  clear_user: (state) => (state.user = null),
 };

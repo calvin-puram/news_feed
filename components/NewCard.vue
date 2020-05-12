@@ -40,7 +40,9 @@
       </md-card-content>
 
       <md-card-actions>
-        <md-button><md-icon>bookmark</md-icon></md-button>
+        <md-button @click="addheadlineToFeed(headline)"
+          ><md-icon>bookmark</md-icon></md-button
+        >
         <md-button><md-icon>message</md-icon></md-button>
       </md-card-actions>
     </md-ripple>
@@ -53,6 +55,25 @@ export default {
     headline: {
       type: Object,
       required: true,
+    },
+  },
+  async fetch({ store, error }) {
+    try {
+      await store.dispatch('news/getFeed');
+    } catch (e) {
+      error({ statusCode: 400, message: 'something Unexpected happens' });
+    }
+  },
+  computed: {
+    user() {
+      return this.$store.getters['auth/user'];
+    },
+  },
+  methods: {
+    async addheadlineToFeed(headline) {
+      if (this.user && this.user.email) {
+        await this.$store.dispatch('news/set_addFeed', headline);
+      }
     },
   },
 };
