@@ -1,4 +1,6 @@
 import md5 from 'md5';
+import db from '~plugins/firestore';
+
 export const state = () => ({
   loading: false,
   token: '',
@@ -27,6 +29,7 @@ export const actions = {
           data.email
         )}?d=identicon`;
         const user = { email: data.email, avatar };
+        await db.collection('users').doc(userdata.email).set(user);
         commit('set_user', user);
       }
       return data;
