@@ -11,7 +11,7 @@
       <md-card-header>
         <div class="md-title">
           <a :href="headline.url" target="_blank"
-            >{{ headline.title.substring(0, 50) }}...</a
+            >{{ headline.title.substring(0, 30) }}...</a
           >
         </div>
 
@@ -21,7 +21,7 @@
         </div>
 
         <div v-if="headline.author" class="md-subhead">
-          {{ headline.author }}
+          {{ headline.author.substring(0, 20) }}...
           <md-icon class="small-icon">face</md-icon>
         </div>
         <div v-if="!headline.author" class="md-subhead">
@@ -36,7 +36,7 @@
       </md-card-header>
 
       <md-card-content v-if="headline.description !== null">
-        {{ headline.description.substring(0, 80) }}...
+        {{ headline.description.substring(0, 50) }}
       </md-card-content>
 
       <md-card-actions>
