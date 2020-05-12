@@ -15,7 +15,7 @@
             {{ user.email }}
           </md-button>
 
-          <md-button>Logout</md-button>
+          <md-button @click="logoutUser">Logout</md-button>
         </template>
 
         <template v-else>
@@ -141,6 +141,9 @@ export default {
     },
     changeCountry(country) {
       this.$store.commit('news/set_country', country);
+    },
+    logoutUser() {
+      this.$store.dispatch('auth/logout');
     },
   },
 };

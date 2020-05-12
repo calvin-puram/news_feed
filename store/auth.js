@@ -1,6 +1,6 @@
 import md5 from 'md5';
 import db from '@/plugins/firestore';
-import saveToLocalStorage from '@/utils/index';
+import { saveUsers, clearSaveUserData } from '@/utils/index';
 
 export const state = () => ({
   loading: false,
@@ -40,13 +40,24 @@ export const actions = {
         commit('set_token', data.idToken);
         commit('set_user', user);
 
-        await saveToLocalStorage(data, user);
+        await saveUsers(data, user);
       }
       return data;
     } catch (e) {
       commit('auth_loading', false);
       console.log(e.response.data.error.message);
     }
+  },
+
+  set_logout({ dispatch }, interval) {
+    setTimeout(() => dispatch('logout'), interval);
+  },
+
+  logout({ commit }) {
+    commit('clear_token');
+    commit('clear_user');
+
+    clearSaveUserData();
   },
 };
 
@@ -62,4 +73,7 @@ export const mutations = {
   set_user(state, user) {
     state.user = user;
   },
+
+  clear_token: (state) => (state.token = ''),
+  clear_user: (state) => (state.user = {}),
 };

@@ -77,4 +77,7 @@ export default {
       pathRewrite: { '^/api/': '' },
     },
   },
+  router: {
+    middleware: ['check-auth'],
+  },
 };
