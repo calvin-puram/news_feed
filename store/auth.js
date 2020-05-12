@@ -1,5 +1,6 @@
 import md5 from 'md5';
 import db from '@/plugins/firestore';
+import saveToLocalStorage from '@/utils/index';
 
 export const state = () => ({
   loading: false,
