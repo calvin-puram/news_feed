@@ -109,6 +109,7 @@
 
 <script>
 export default {
+  props: ['feed'],
   data() {
     return {
       country: '',
@@ -141,9 +142,6 @@ export default {
     user() {
       return this.$store.getters['auth/user'];
     },
-    feed() {
-      return this.store.getters['news/feed'];
-    },
   },
   watch: {
     async country() {
@@ -175,6 +173,7 @@ export default {
     },
     logoutUser() {
       this.$store.dispatch('auth/logout');
+      this.$store.dispatch('news/clearFeed');
     },
   },
 };

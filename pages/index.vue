@@ -1,7 +1,7 @@
 <template>
   <div class="md-layout md-alignment-center" style="margin: 4em 0;">
     <!-- nav -->
-    <Navbar />
+    <Navbar :feed="feed" />
 
     <div class="md-layout-item md-size-95">
       <md-content
@@ -35,6 +35,7 @@ export default {
         'news/loadHeadline',
         `/api/top-headlines?country=${store.state.news.countries}&category=${store.state.news.categories}`
       );
+      await store.dispatch('news/getFeed');
     } catch (e) {
       error({ statusCode: 400, message: 'something Unexpected happens' });
     }
@@ -47,6 +48,9 @@ export default {
   computed: {
     headlines() {
       return this.$store.getters['news/headlines'];
+    },
+    feed() {
+      return this.$store.getters['news/feed'];
     },
   },
 };

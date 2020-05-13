@@ -36,14 +36,17 @@ export const actions = {
   async getFeed({ commit, rootState }) {
     if (rootState.auth.user.email) {
       const feedRef = db.collection(`users/${rootState.auth.user.email}/feed`);
-      await feedRef.onSnapshot((querySnapshot) => {
-        const headline = [];
+      await feedRef.get().then((querySnapshot) => {
+        const headlinefeed = [];
         querySnapshot.forEach((doc) => {
-          headline.push(doc.data());
-          commit('set_feed', headline);
+          headlinefeed.push(doc.data());
         });
+        commit('set_feed', headlinefeed);
       });
     }
+  },
+  clearFeed({ commit }) {
+    commit('clear_feed');
   },
 };
 
@@ -60,8 +63,8 @@ export const mutations = {
   set_country(state, country) {
     state.countries = country;
   },
-  set_feed(state, feed) {
-    state.feed = feed;
+  set_feed(state, headlinefeed) {
+    state.feed = headlinefeed;
   },
   clear_feed(state) {
     state.feed = [];

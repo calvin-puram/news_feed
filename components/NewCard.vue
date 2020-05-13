@@ -59,13 +59,7 @@ export default {
       required: true,
     },
   },
-  async fetch({ store, error }) {
-    try {
-      await store.dispatch('news/getFeed');
-    } catch (e) {
-      error({ statusCode: 400, message: 'something Unexpected happens' });
-    }
-  },
+
   computed: {
     user() {
       return this.$store.getters['auth/user'];
