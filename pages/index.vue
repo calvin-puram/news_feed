@@ -35,7 +35,7 @@ export default {
         'news/loadHeadline',
         `/api/top-headlines?country=${store.state.news.countries}&category=${store.state.news.categories}`
       );
-      await store.dispatch('news/getFeed');
+      // await store.dispatch('news/getFeed');
     } catch (e) {
       error({ statusCode: 400, message: 'something Unexpected happens' });
     }
